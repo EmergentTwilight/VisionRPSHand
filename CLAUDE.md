@@ -46,10 +46,53 @@ On Jetson, the serial port would be `/dev/ttyTHS0` or similar.
 
 ## Environment
 
-**CUDA** (already configured):
+### Python Virtual Environment
+
+**Location**: `/home/nvidia/VisionRPSHand/venv`
+
+**Activation**:
+```bash
+source /home/nvidia/VisionRPSHand/venv/bin/activate
+```
+
+**Deactivation**:
+```bash
+deactivate
+```
+
+**Installed Packages**:
+- mediapipe==0.10.18
+- opencv-python==4.11.0
+- numpy
+
+### CUDA
+
+**CUDA 12.6** (already configured):
 ```bash
 export CUDA_HOME=/usr/local/cuda-12.6
 export PATH=$CUDA_HOME/bin:$PATH
 ```
 
-**GPIO**: Use `Jetson.GPIO` library
+### GPIO
+
+Use `Jetson.GPIO` library
+
+## Gesture Recognition
+
+### MediaPipe Rock-Paper-Scissors
+
+**Location**: `/home/nvidia/VisionRPSHand/Rock-Paper-Scissors-Machine/`
+
+**Run**:
+```bash
+cd /home/nvidia/VisionRPSHand/Rock-Paper-Scissors-Machine/
+source /home/nvidia/VisionRPSHand/venv/bin/activate
+python dual.py
+```
+
+**Features**:
+- MediaPipe Hands for hand landmark detection
+- KNN classifier for gesture recognition (rock, paper, scissors)
+- Dual player support
+
+**Press 'q' to quit**
