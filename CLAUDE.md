@@ -18,31 +18,22 @@ VisionRPSHand - 基于视觉和灵巧手的猜拳机器人
 - Feetech SCS0009 servos (serial bus control)
 - Controlled via `rustypot` library
 
-## GPIO Reference
+## Directory Structure
 
-See `docs/PINOUT_JETSON_ORIN_NANO.md` for complete pinout.
-
-**Key PWM Pins**:
-- Pin 15 → pwmchip0 (3280000.pwm)
-- Pin 32 → pwmchip3 (32e0000.pwm)
-- Pin 33 → pwmchip2 (32c0000.pwm)
-
-## AmazingHand Control
-
-The hand uses serial communication, not direct GPIO PWM.
-
-Example from `docs/AmazingHand/PythonExample/AmazingHand_Demo.py`:
-```python
-from rustypot import Scs0009PyController
-
-c = Scs0009PyController(
-    serial_port="COM11",
-    baudrate=1000000,
-    timeout=0.5,
-)
 ```
-
-On Jetson, the serial port would be `/dev/ttyTHS0` or similar.
+VisionRPSHand/
+├── app/                # 主游戏应用
+│   ├── main.py        # 游戏入口
+│   ├── templates/     # Web界面
+│   └── high_scores.json
+├── hand/               # 灵巧手控制
+├── gesture/            # 手势识别
+│   ├── data/           # 训练数据
+│   └── gesture_train.csv
+├── docs/               # 文档
+├── venv/               # 虚拟环境
+└── run.sh              # 启动脚本
+```
 
 ## Environment
 
@@ -55,44 +46,66 @@ On Jetson, the serial port would be `/dev/ttyTHS0` or similar.
 source /home/nvidia/VisionRPSHand/venv/bin/activate
 ```
 
-**Deactivation**:
-```bash
-deactivate
-```
-
 **Installed Packages**:
 - mediapipe==0.10.18
 - opencv-python==4.11.0
 - numpy
+- flask
+- flask-socketio
+- rustypot
 
-### CUDA
+### Hardware
 
-**CUDA 12.6** (already configured):
-```bash
-export CUDA_HOME=/usr/local/cuda-12.6
-export PATH=$CUDA_HOME/bin:$PATH
-```
-
-### GPIO
-
-Use `Jetson.GPIO` library
+- **灵巧手**: `/dev/ttyACM0` (USB串口)
+- **摄像头**: `/dev/video0`
 
 ## Gesture Recognition
 
-### MediaPipe Rock-Paper-Scissors
+**Location**: `/home/nvidia/VisionRPSHand/gesture/`
 
-**Location**: `/home/nvidia/VisionRPSHand/Rock-Paper-Scissors-Machine/`
+**Training Data**: `gesture/data/gesture_train.csv`
+
+**Supported Gestures**:
+- 0: rock (石头)
+- 5: paper (布)
+- 9: scissors (剪刀)
+- 10: ok (OK)
+
+### Adding New Gestures
+
+```bash
+cd gesture
+python gather_dataset.py
+python gather_thumb.py
+```
+
+## Dexterous Hand Control
+
+**Location**: `/home/nvidia/VisionRPSHand/hand/`
+
+**Test Scripts**:
+- `test_rock.py` - 测试石头手势
+- `test_rps.py` - 测试猜拳手势
+- `test_gestures.py` - 测试所有手势
+
+## Game Application
+
+**Entry**: `/home/nvidia/VisionRPSHand/app/main.py`
 
 **Run**:
 ```bash
-cd /home/nvidia/VisionRPSHand/Rock-Paper-Scissors-Machine/
-source /home/nvidia/VisionRPSHand/venv/bin/activate
-python dual.py
+./run.sh
 ```
 
-**Features**:
-- MediaPipe Hands for hand landmark detection
-- KNN classifier for gesture recognition (rock, paper, scissors)
-- Dual player support
+**Access**: `http://localhost:5000`
 
-**Press 'q' to quit**
+## Game Flow
+
+1. **monitoring**: 检测OK手势开始游戏
+2. **countdown**: 3-2-1倒计时
+   - T-0.2: 机器开始出拳
+   - T=0: 显示0
+   - T+0.2: 识别用户手势
+3. **result**: 显示结果
+4. **paused**: 准备下一局
+5. **game_over**: 游戏结束（检测到OK或连续3次无效）

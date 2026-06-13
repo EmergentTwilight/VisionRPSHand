@@ -1,0 +1,62 @@
+[
+  {
+    "date": "2026-06-13 14:52:48",
+    "user_score": 3,
+    "machine_score": 0,
+    "difference": 3
+  },
+  {
+    "date": "2026-06-13 13:54:40",
+    "user_score": 2,
+    "machine_score": 0,
+    "difference": 2
+  },
+  {
+    "date": "2026-06-13 13:51:04",
+    "user_score": 1,
+    "machine_score": 0,
+    "difference": 1
+  },
+  {
+    "date": "2026-06-13 13:51:26",
+    "user_score": 1,
+    "machine_score": 0,
+    "difference": 1
+  },
+  {
+    "date": "2026-06-13 14:23:25",
+    "user_score": 2,
+    "machine_score": 1,
+    "difference": 1
+  },
+  {
+    "date": "2026-06-13 14:23:49",
+    "user_score": 1,
+    "machine_score": 0,
+    "difference": 1
+  },
+  {
+    "date": "2026-06-13 14:24:12",
+    "user_score": 1,
+    "machine_score": 0,
+    "difference": 1
+  },
+  {
+    "date": "2026-06-13 14:31:27",
+    "user_score": 6,
+    "machine_score": 5,
+    "difference": 1
+  },
+  {
+    "date": "2026-06-13 14:40:19",
+    "user_score": 3,
+    "machine_score": 2,
+    "difference": 1
+  },
+  {
+    "date": "2026-06-13 15:01:21",
+    "user_score": 3,
+    "machine_score": 2,
+    "difference": 1
+  }
+]
